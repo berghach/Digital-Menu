@@ -1,13 +1,38 @@
-<div class="py-12">
+@if(session('success'))
+<div class="alert alert-success" role="alert">
+{{ session('success') }}
+</div>
+@endif
+<div class="container py-12">
+    <div class="row">
     @foreach($plans as $plan)
         <div class="col-md-4 mt-md-0 mt-4">
             <div class="gallery-demo">
-                <a href="#gal{{ $plan->id }}">
-                    <img src="{{ asset('helps/images/blog2.jpg') }}" alt=" " class="img-fluid" />
+                <a href="#{{ $plan->id }}">
+                    <img style="" src="{{ asset('helps/images/blog2.jpg') }}" alt=" " class="img-fluid" />
                     <h4 class="p-mask">{{ $plan->name }} - <span>${{ $plan->price }}</span></h4>
-                    <h4 class="p-mask">{{ $plan->name }}</h4>
+                    <h4 class="p-mask">{{ $plan->duration_in_days }} Day</h4>
                 </a>
             </div>
+            @role('Admin')
+            <a class="btn btn-success mt-3" style="width: 100%" href="{{ route('plans.edit', $plan) }}">Edit</a>
+            <form action="{{ route('plans.destroy', $plan) }}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn submit mb-4">Delete</button>
+            </form>
+            @endrole
+            @role('Awner')
+            <form action="{{ route('operatorsPlan') }}" method="POST">
+                @csrf
+                <input type="hidden" name="Plan_id" value="{{ $plan->id }}">
+                <button class="btn btn-warning submit mb-4" type="submit">Assign Plan</button>
+            </form>
+            
+            @endrole
         </div>
     @endforeach
 </div>
+</div>
+
+

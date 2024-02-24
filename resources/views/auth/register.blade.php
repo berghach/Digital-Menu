@@ -41,11 +41,8 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
         <div>
-            <span class="d-flex mt-3">Chose your role</span>
-            <select name="role" class="mt-1" style="width: 100%" id="role">
-                <option value="">Chose your role</option>
+            <select hidden name="role" class="mt-1" style="width: 100%" id="role">
                 <option value="1">Awner</option>
-                <option value="2">Operatuer</option>
             </select>
         </div>
 

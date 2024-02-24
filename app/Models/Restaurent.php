@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Plan extends Model
+class Restaurent extends Model
 {
     use HasFactory;
-protected $fillable = ['name', 'price', 'duration_in_days'];
 
+    protected $table = 'restaurants';
+    protected $fillable = ['name', 'address', 'hours_of_operation'];
 }

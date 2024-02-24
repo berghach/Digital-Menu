@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->text('hours_of_operation');
+            // $table->unsignedBigInteger('user_id'); // Foreign key column
+
             $table->timestamps();
         });
     }
@@ -25,6 +27,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Restaurants');
+        Schema::table('restaurants', function (Blueprint $table) {
+            $table->dropForeign(['user_id']); 
+        });
+
+        Schema::dropIfExists('restaurants');
     }
 };

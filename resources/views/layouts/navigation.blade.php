@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('welcome') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -19,15 +19,22 @@
                     <x-nav-link :href="route('Admin')" :active="request()->routeIs('Admin')">
                         {{ __('Add Plan') }}
                     </x-nav-link>
-                    @endrole
-                    @role('Add ')
-                    <x-nav-link :href="route('Admin')" :active="request()->routeIs('Admin')">
-                        {{ __('Add Plan') }}
+                    <x-nav-link :href="route('Gestion-du-plans')" :active="request()->routeIs('Gestion-du-plans')">
+                        {{ __('Gestion du plans') }}
                     </x-nav-link>
                     @endrole
                     @role('Awner')
                     <x-nav-link :href="route('Awner')" :active="request()->routeIs('Awner')">
                         {{ __('Awner') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('yoAwner')" :active="request()->routeIs('yoAwner')">
+                        {{ __('Create Resto') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('operatuerForm')" :active="request()->routeIs('operatuerForm')">
+                        {{ __('Add Operatuers') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('GestionOfOPerar')" :active="request()->routeIs('GestionOfOPerar')">
+                        {{ __('Gestion Operatuers') }}
                     </x-nav-link>
                     @endrole
                     @role('Operatuer')

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plan as planing;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Plan as planing;
+use Illuminate\Support\Facades\Auth;
 
 class PlanController extends Controller
 {
@@ -12,7 +14,9 @@ class PlanController extends Controller
      */
     public function index()
     {
-
+        
+        $plans = planing::all();
+        return view('Awner.index', compact('plans'));
     }
 
     /**
@@ -59,22 +63,46 @@ class PlanController extends Controller
      */
     public function edit(planing $plan)
     {
-        //
+        return view('Admin.editPlans', compact('plan'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, planing $plan)
     {
-        //
-    }
+        // dd($plan);
 
+        $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'duration_in_days' => 'required|numeric',
+        ]);
+    
+        $plan->update($request->all());
+    
+        return redirect()->back()->with('success', 'Plan updated successfully!');
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(planing $plan)
-    {
-        //
+{
+    $plan->delete();
+    return redirect()->back()->with('success', 'Plan deleted successfully!');
+}
+
+public function assignPlan(Request $request)
+{
+    
+    $restoId = Auth::user()->resto_id;
+    // jebt biha ga3 khoutna li b7al khothom
+    $users = User::where('resto_id', $restoId)->get();
+    $planId = $request->Plan_id;
+        foreach ($users as $user) {
+        $user->Plan_id = $planId;
+        $user->save();
     }
+
+    return redirect()->back()->with('success', 'Plan assigned to users successfully!');
+}
+
+
 }
