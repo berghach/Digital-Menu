@@ -6,6 +6,28 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/qrious.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script> --}}
+<style>
+    .card {
+        border: 1px solid #8f8585;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: 200px; /* Set a fixed height for the image or video */
+        object-fit: cover; /* Ensure the image or video fills the container */
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-text {
+        flex-grow: 1; /* Allow the text to expand to fill remaining space */
+    }
+</style>
 
 <div class="baneer-w3ls">
     <div class="row no-gutters">
@@ -101,64 +123,36 @@
         <div class="row">
             <!-- blog grid -->
 <!-- blog grid -->
-@foreach ($menus as $menu)
-<div class="col-lg-4 col-md-6">
-    <div class="card border-0 med-blog">
-        <div class="card-header p-0">
-            <a href="">
-                @foreach ($menu->getMedia('images') as $image)
-                    <img class="card-img-bottom" src="{{ $image->getUrl() }}" alt="{{ $menu->name }} Image">
-                @endforeach
-                @foreach ($menu->getMedia('videos') as $video)
-                    <video class="card-img-bottom" controls>
-                        <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
-                        Your browser does not support the video tag.
-                    </video>
-                @endforeach
-            </a>
-        </div>
-        <div class="card-body border border-top-0">
-            <h5 class="blog-title card-title m-0">{{ $menu->name }}</h5>
-            <p class="mt-3">{{ $menu->description }}</p>
-            <a href="{{ route('allItems', ['menu_id' => $menu->id]) }}">View Items
-                <span class="fa fa-caret-right ml-1" aria-hidden="true"></span>
-            </a>
-
-            {{-- <div id="qrcode_{{ $menu->id }}">
-                <img src="https://localhost/allItems/{{ $menu->id }}.svg" alt="QR Code">
+<div class="row">
+    @foreach ($menus as $menu)
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-img-top">
+                <a href="#">
+                    @foreach ($menu->getMedia('images') as $image)
+                        <img class="card-img-top" src="{{ $image->getUrl() }}" alt="{{ $menu->name }} Image">
+                    @endforeach
+                    @foreach ($menu->getMedia('videos') as $video)
+                        <video class="card-img-top" controls>
+                            <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
+                            Your browser does not support the video tag.
+                        </video>
+                    @endforeach
+                </a>
             </div>
-            
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    fetch('https://api.qrcodegeneratorapi.com/v1/create', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'apikey': 'abcd1234' // Replace with your actual API key
-                        },
-                        body: JSON.stringify({
-                            data: 'http://example.com', // Replace with the actual data to encode in the QR code
-                            type: 'text', // Type of data (e.g., text, url, phone)
-                            size: 200 // Size of the QR code in pixels
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle the response data, which should contain the generated QR code image URL
-                        console.log(data);
-                        // You can now use the data to display the QR code image
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-                });
-            </script> --}}
-            
-            
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ $menu->name }}</h5>
+                <p class="card-text flex-grow-1">{{ $menu->description }}</p>
+                <div class="mt-auto text-center">
+                    {{ QrCode::size(100)->SMS('http://localhost/allItems/' . $menu->id) }}
+                </div>
+            </div>
         </div>
     </div>
+    @endforeach
 </div>
-@endforeach
+
+
 <!-- //blog grid -->
 
             <!-- //blog grid -->
