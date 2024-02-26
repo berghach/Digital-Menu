@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Plan as planing;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PlanController extends Controller
 {
@@ -89,19 +90,49 @@ class PlanController extends Controller
     return redirect()->back()->with('success', 'Plan deleted successfully!');
 }
 
+// public function assignPlan(Request $request)
+// {
+    
+//     $restoId = Auth::user()->resto_id;
+//     // jebt biha ga3 khoutna li b7al khothom
+//     $users = User::where('resto_id', $restoId)->get();
+//     $planId = $request->Plan_id;
+//         foreach ($users as $user) {
+//         $user->Plan_id = $planId;
+//         $user->save();
+//     }
+
+//     return redirect()->back()->with('success', 'Plan assigned to users successfully!');
+// }
 public function assignPlan(Request $request)
 {
-    
     $restoId = Auth::user()->resto_id;
-    // jebt biha ga3 khoutna li b7al khothom
     $users = User::where('resto_id', $restoId)->get();
     $planId = $request->Plan_id;
-        foreach ($users as $user) {
+
+    foreach ($users as $user) {
         $user->Plan_id = $planId;
         $user->save();
+
+        // katjib les detaille dyal plan 
+        $plan = planing::findOrFail($planId);
+        $this->sendAbonnementUpdatedEmail($user, $plan);
     }
 
     return redirect()->back()->with('success', 'Plan assigned to users successfully!');
+}
+
+/**
+ * Send email notification to user about abonnement update.
+ */
+private function sendAbonnementUpdatedEmail($user, $plan)
+{
+    $data = ['user' => $user, 'plan' => $plan]; // Updated variable names
+
+    Mail::send('emails.abon_update', $data, function ($message) use ($user) {
+        $message->to($user->email, $user->name)
+            ->subject('Your Plan has been Updated'); // Updated email subject
+    });
 }
 
 

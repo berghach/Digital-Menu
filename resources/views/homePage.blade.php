@@ -1,7 +1,12 @@
 
 <!-- //navigation -->
 
-<!-- banner -->
+{{-- <!-- banner -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/qrious.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script> --}}
+
 <div class="baneer-w3ls">
     <div class="row no-gutters">
         <div class="col-xl-5 col-lg-6">
@@ -91,26 +96,71 @@
     <div class="container pb-xl-5 pb-lg-3">
         <div class="title-section text-center mb-md-5 mb-4">
             <p class="w3ls-title-sub">Tasty</p>
-            <h3 class="w3ls-title">Our <span>Special</span></h3>
+            <h3 class="w3ls-title">Our <span>Menues</span></h3>
         </div>
         <div class="row">
             <!-- blog grid -->
-            <div class="col-lg-4 col-md-6">
-                <div class="card border-0 med-blog">
-                    <div class="card-header p-0">
-                        <a href="menu.html">
-                            <img class="card-img-bottom" src="{{ asset('helps/images/blog1.jpg') }}" alt="Card image cap">
-                        </a>
-                    </div>
-                    <div class="card-body border border-top-0">
-                        <h5 class="blog-title card-title m-0"><a href="menu.html">French Burger</a></h5>
-                        <p class="mt-3">Cras ultricies ligula sed magna dictum porta auris blandita.</p>
-                        <a href="menu.html" class="btn button-w3ls mt-4 mb-3">View More
-                            <span class="fa fa-caret-right ml-1" aria-hidden="true"></span>
-                        </a>
-                    </div>
-                </div>
+<!-- blog grid -->
+@foreach ($menus as $menu)
+<div class="col-lg-4 col-md-6">
+    <div class="card border-0 med-blog">
+        <div class="card-header p-0">
+            <a href="">
+                @foreach ($menu->getMedia('images') as $image)
+                    <img class="card-img-bottom" src="{{ $image->getUrl() }}" alt="{{ $menu->name }} Image">
+                @endforeach
+                @foreach ($menu->getMedia('videos') as $video)
+                    <video class="card-img-bottom" controls>
+                        <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
+                        Your browser does not support the video tag.
+                    </video>
+                @endforeach
+            </a>
+        </div>
+        <div class="card-body border border-top-0">
+            <h5 class="blog-title card-title m-0">{{ $menu->name }}</h5>
+            <p class="mt-3">{{ $menu->description }}</p>
+            <a href="{{ route('allItems', ['menu_id' => $menu->id]) }}">View Items
+                <span class="fa fa-caret-right ml-1" aria-hidden="true"></span>
+            </a>
+
+            {{-- <div id="qrcode_{{ $menu->id }}">
+                <img src="https://localhost/allItems/{{ $menu->id }}.svg" alt="QR Code">
             </div>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    fetch('https://api.qrcodegeneratorapi.com/v1/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': 'abcd1234' // Replace with your actual API key
+                        },
+                        body: JSON.stringify({
+                            data: 'http://example.com', // Replace with the actual data to encode in the QR code
+                            type: 'text', // Type of data (e.g., text, url, phone)
+                            size: 200 // Size of the QR code in pixels
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data, which should contain the generated QR code image URL
+                        console.log(data);
+                        // You can now use the data to display the QR code image
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            </script> --}}
+            
+            
+        </div>
+    </div>
+</div>
+@endforeach
+<!-- //blog grid -->
+
             <!-- //blog grid -->
             <!-- blog grid -->
 
@@ -310,3 +360,8 @@
         </div>
     </div>
 </div>
+{{-- 
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/qrious.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script> --}}

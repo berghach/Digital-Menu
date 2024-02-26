@@ -2,12 +2,17 @@
 
 // use App\Models\User;
 
-use App\Http\Controllers\AwnerController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AwnerController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurentController;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +25,7 @@ use App\Http\Controllers\RestaurentController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -56,6 +59,20 @@ Route::get('/operatuerForm', [UserController::class, 'index'])->middleware('auth
 Route::post('/AddOperatuer', [UserController::class, 'store'])->middleware('auth', 'role:Awner')->name('AddOperatuer');
 Route::get('/GestionOfOPerar', [AwnerController::class, 'index'])->middleware('auth', 'role:Awner')->name('GestionOfOPerar');
 Route::post('/operatorsPlan', [PlanController::class, 'assignPlan'])->middleware('auth', 'role:Awner')->name('operatorsPlan');
+// $isOwner = true;
+Route::get('/menusform', [MenuController::class, 'index'])->middleware('auth', 'role:Awner')->name('menusform');
+Route::post('/menus', [MenuController::class, 'store'])->middleware('auth', 'role:Awner')->name('menus.store');
+Route::get('/Menues', [HomeController::class, 'index'])->middleware('auth', 'role:Awner')->name('Menues');
+Route::get('/itemForm', [ItemsController::class, 'index'])->middleware('auth', 'role:Awner')->name('itemForm');
+Route::post('/addItem', [ItemsController::class, 'store'])->middleware('auth', 'role:Awner')->name('addItem');
+Route::get('/allItems/{menu_id}', [ItemsController::class, 'getAllItems'])->middleware('auth', 'role:Awner')->name('allItems');
+// Route::get('/generateQRCode/{menu_id}', [ItemsController::class, 'generateQRCode'])->middleware('auth', 'role:Awner')->name('generateQRCode');
+// Route::get('/generateQRCode/{menu_id}', [ItemsController::class, 'generateQRCode'])->name('generateQRCode');
+Route::get('/generateQRCode/{menu_id}', [ItemsController::class, 'generateQRCode'])->name('generateQRCode');
+
+
+
+
 
 
 

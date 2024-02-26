@@ -36,10 +36,19 @@
                     <x-nav-link :href="route('GestionOfOPerar')" :active="request()->routeIs('GestionOfOPerar')">
                         {{ __('Gestion Operatuers') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('menusform')" :active="request()->routeIs('menusform')">
+                        {{ __('Add Menu') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('itemForm')" :active="request()->routeIs('itemForm')">
+                        {{ __('Add item') }}
+                    </x-nav-link>
                     @endrole
                     @role('Operatuer')
                     <x-nav-link :href="route('Operatuer')" :active="request()->routeIs('Operatuer')">
                         {{ __('Operatuer') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('menusform')" :active="request()->routeIs('menusform')">
+                        {{ __('Add Menu') }}
                     </x-nav-link>
                     @endrole
                 </div>
