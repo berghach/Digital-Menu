@@ -1,4 +1,5 @@
 @include('base')
+
 <header id="home">
     <!-- top-bar -->
     <div class="top-bar py-2 border-bottom">
@@ -81,7 +82,7 @@
             <!-- logo -->
             <h1>
                 <a id="logo" class="logo" href="index.html">
-                    <img src="{{ asset('helps/images/logo.png') }}" alt="" class="img-fluid"><span>Tasty</span> Burger
+                    <img style="" src="{{ asset('helps/images/logo.png') }}" alt="" class="img-fluid"><span>DG</span> MENU
                 </a>
             </h1>
             <!-- //logo -->

@@ -3,6 +3,17 @@
 {{ session('success') }}
 </div>
 @endif
+@if(session('info'))
+    <div class="alert alert-warning">
+        {{ session('info') }}
+    </div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="container py-12">
     <div class="row">
     @foreach($plans as $plan)

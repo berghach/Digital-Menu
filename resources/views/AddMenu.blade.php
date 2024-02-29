@@ -1,15 +1,39 @@
 <x-Awner-layout>
 @include('base')
+<style>
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+    .fade-out {
+        animation: fadeOut 5s ease forwards;
+    }
+</style>
 <div class="login-contect py-5">
     <div class="container py-xl-5 py-3">
         <div class="login-body">
             <div class="login p-4 mx-auto">
-                <h5 class="text-center mb-4">Add Your Operratuers</h5>
+                <h5 class="text-center mb-4">Add Your Menu</h5>
                 @if(session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                <div class="alert alert-success" role="alert" id="successMessage">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-success" role="alert" id="successMessage">
+                {{ session('error') }}
+            </div>
+        @endif
+            
+            <script>    
+                setTimeout(function(){
+                    var successMessage = document.getElementById('successMessage');
+                    if(successMessage) {
+                        successMessage.remove();
+                    }
+                }, 3000);
+            </script>
                     {{-- @if(session('error'))
                     <div class="alert alert-danger" role="alert">
                         {{ session('error') }}

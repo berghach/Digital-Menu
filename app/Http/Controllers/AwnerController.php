@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Awner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 class AwnerController extends Controller
 {
@@ -43,7 +45,7 @@ class AwnerController extends Controller
             'name' => 'required|string',
             'email' => 'required|email',
             'password' => 'required',
-            'role' => ['required', 'in:2'], // 
+            'role' => ['required', 'in:2'], 
             'plan_id' => 'required|exists:plans,id', 
         ]);
     
@@ -73,24 +75,45 @@ class AwnerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Awner $awner)
+    public function edit($id)
     {
-        //
+        $operator = User::findOrFail($id);
+        return view('Awner.EditOperatuer', compact('operator'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Awner $awner)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required',
+            'role' => ['required', 'in:2'],
+            'plan_id' => 'required|exists:plans,id',
+        ]);
+    
+        $operator = User::findOrFail($id);
+        $operator->name = $request->name;
+        $operator->email = $request->email;
+        $operator->password = bcrypt($request->password);
+        $operator->role = $request->role;
+        $operator->plan_id = $request->plan_id;
+        $operator->save();
+
+        Session::flash('success', 'Operator updated successfully.');
+        return redirect()->route('awners.index')->with('success', true);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Awner $awner)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    $operator = User::findOrFail($id);
+    $operator->delete();
+    return redirect()->route('GestionOfOPerar', ['id' => $id])->with('success', 'Operator deleted successfully.');
+}
 }

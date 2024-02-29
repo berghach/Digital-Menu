@@ -36,4 +36,8 @@
         </div>
         <button type="submit" class="btn btn-success submit mb-4">Submit</button>
     </form>
-    </x-Awner-layout>
+
+<hr>
+
+
+</x-Awner-layout>

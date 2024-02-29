@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -30,32 +31,40 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            // 'restaurant_id' => 'require',
-            'media' => 'required|file|mimes:jpeg,png,mp4,mov,avi|max:10240', 
-        ]);
-    
-        // Get the authenticated user
-        $user = Auth::user()->resto_id;
-        // dd($user);
-        $validatedData['restaurant_id'] = $user;
-    
-        $menu = Menu::create($validatedData);
-    
-        if ($request->file('media')->isValid() && strpos($request->file('media')->getClientMimeType(), 'video/') === 0) {
-            $menu->addMediaFromRequest('media')->toMediaCollection('videos');
-        } else {
-            $menu->addMediaFromRequest('media')->toMediaCollection('images');
-        }
-         $this->sendMenuCreationConfirmationEmail(Auth::user(), $menu);
+        $user = $request->user();
+        $userPlan = Plan::find($user->Plan_id);
 
-    // dd($menu);
-   
-        return redirect()->route('menusform')->with('success', 'Menu created successfully.');
+        if ($userPlan) {
+            $numberOfMenus = $userPlan->NumberOfmenus;
+    
+            $numberOfMenusCreatedByUser = Menu::where('restaurant_id', $user->resto_id)->count();
+    
+            if ($numberOfMenusCreatedByUser < $numberOfMenus) {
+                $validatedData = $request->validate([
+                    'name' => 'required|string',
+                    'description' => 'required|string',
+                    'media' => 'required|file|mimes:jpeg,png,mp4,mov,avi|max:10240', // Adjust the max file size if needed
+                ]);
+                    $validatedData['restaurant_id'] = $user->resto_id;
+                    $menu = Menu::create($validatedData);
+                if ($request->file('media')->isValid() && strpos($request->file('media')->getClientMimeType(), 'video/') === 0) {
+                    $menu->addMediaFromRequest('media')->toMediaCollection('videos');
+                } else {
+                    $menu->addMediaFromRequest('media')->toMediaCollection('images');
+                }
+
+                $this->sendMenuCreationConfirmationEmail($user, $menu);
+
+                return redirect()->route('menusform')->with('success', 'Menu created successfully.');
+            } else {
+                return redirect()->route('menusform')->with('error', 'You cannot add more menus under this plan.');
+            }
+        } else {
+            return redirect()->route('menusform')->with('error', 'Please choose your plan first.');
+        }
     }
+
+
     private function sendMenuCreationConfirmationEmail($user, $menu)
 {
     // Prepare data to be passed to the email view
@@ -100,4 +109,6 @@ class MenuController extends Controller
     {
         //
     }
+
+    
 }

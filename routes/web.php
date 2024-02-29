@@ -60,22 +60,42 @@ Route::post('/AddOperatuer', [UserController::class, 'store'])->middleware('auth
 Route::get('/GestionOfOPerar', [AwnerController::class, 'index'])->middleware('auth', 'role:Awner')->name('GestionOfOPerar');
 Route::post('/operatorsPlan', [PlanController::class, 'assignPlan'])->middleware('auth', 'role:Awner')->name('operatorsPlan');
 // $isOwner = true;
-Route::get('/menusform', [MenuController::class, 'index'])->middleware('auth', 'role:Awner')->name('menusform');
-Route::post('/menus', [MenuController::class, 'store'])->middleware('auth', 'role:Awner')->name('menus.store');
+
+
 Route::get('/Menues', [HomeController::class, 'index'])->middleware('auth', 'role:Awner')->name('Menues');
 Route::get('/itemForm', [ItemsController::class, 'index'])->middleware('auth', 'role:Awner')->name('itemForm');
 Route::post('/addItem', [ItemsController::class, 'store'])->middleware('auth', 'role:Awner')->name('addItem');
 Route::get('/allItems/{menu_id}', [ItemsController::class, 'getAllItems'])->middleware('auth', 'role:Awner')->name('allItems');
 // Route::get('/generateQRCode/{menu_id}', [ItemsController::class, 'generateQRCode'])->middleware('auth', 'role:Awner')->name('generateQRCode');
 // Route::get('/generateQRCode/{menu_id}', [ItemsController::class, 'generateQRCode'])->name('generateQRCode');
-Route::get('/generateQRCode/{menu_id}', [ItemsController::class, 'generateQRCode'])->name('generateQRCode');
+// Route::get('/generateQRCode/{menu_id}', [ItemsController::class, 'generateQRCode'])->name('generateQRCode');
+Route::post('/assignPermissionsToOperator', [UserController::class, 'assignPermissionsToOperator'])->middleware('auth', 'role:Awner')->name('assignPermissionsToOperator');
+Route::get('/assign-permissions', [UserController::class, 'showAssignPermissionsForm'])->name('assignPermissionsForm');
+
+
+Route::get('/user-plan', [PlanController::class, 'userOfresinPlan'])->name('user.plan');
+
+
+
+// Change the route name to a unique name
+Route::get('/items', [ItemsController::class, 'getAllItemsOfworkers'])->middleware('auth', 'role:Awner')->name('items.getAllItems');
+Route::get('/awners/{id}/edit', [AwnerController::class, 'edit'])->middleware('auth', 'role:Awner')->name('awners.edit');
+Route::put('/awners/{id}', [AwnerController::class, 'update'])->middleware('auth', 'role:Awner')->name('awners.update');
+Route::delete('/awners/{id}', [AwnerController::class, 'destroy'])->middleware('auth', 'role:Awner')->name('awners.destroy');
 
 
 
 
-
-
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/menusform', [MenuController::class, 'index'])->name('menusform');
+    Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
+    Route::get('/items/{menu}', [ItemsController::class, 'index'])->name('items.index');
+Route::post('/items', [ItemsController::class, 'store'])->name('items.store');
+Route::get('/items/{item}/edit', [ItemsController::class, 'edit'])->name('items.edit');
+Route::put('/items/{item}', [ItemsController::class, 'update'])->name('items.update');
+Route::delete('/items/{item}', [ItemsController::class, 'destroy'])->name('items.destroy');
+    
+});
 
 
 

@@ -12,7 +12,10 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
-
+    public function plan()
+    {   
+        return $this->belongsTo(Plan::class);
+    }
     /**
      * The attributes that are mass assignable.
      *

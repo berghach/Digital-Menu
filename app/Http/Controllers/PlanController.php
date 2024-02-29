@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Plan as planing;
@@ -33,18 +35,22 @@ class PlanController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         // Validate the form data
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
             'duration_in_days' => 'required|numeric',
+            'NumberOfOperateurs' => 'required|numeric',
+            'NumberOfmenus___' => 'required|numeric',
         ]);
-
         // Create a new plan
         $plan = new planing();
         $plan->name = $request->name;
         $plan->price = $request->price;
         $plan->duration_in_days = $request->duration_in_days;
+        $plan->NumberOfmenus = $request->NumberOfmenus___; 
+        $plan->NumberOfOperateurs = $request->NumberOfOperateurs;
         $plan->save();
 
         // Redirect back with success message
@@ -75,6 +81,9 @@ class PlanController extends Controller
             'name' => 'required|string',
             'price' => 'required|numeric',
             'duration_in_days' => 'required|numeric',
+            'NumberOfmenus' => 'required|numeric',
+            'NumberOfOperateurs' => 'required|numeric',
+
         ]);
     
         $plan->update($request->all());
@@ -90,20 +99,7 @@ class PlanController extends Controller
     return redirect()->back()->with('success', 'Plan deleted successfully!');
 }
 
-// public function assignPlan(Request $request)
-// {
-    
-//     $restoId = Auth::user()->resto_id;
-//     // jebt biha ga3 khoutna li b7al khothom
-//     $users = User::where('resto_id', $restoId)->get();
-//     $planId = $request->Plan_id;
-//         foreach ($users as $user) {
-//         $user->Plan_id = $planId;
-//         $user->save();
-//     }
 
-//     return redirect()->back()->with('success', 'Plan assigned to users successfully!');
-// }
 public function assignPlan(Request $request)
 {
     $restoId = Auth::user()->resto_id;
@@ -114,13 +110,34 @@ public function assignPlan(Request $request)
         $user->Plan_id = $planId;
         $user->save();
 
-        // katjib les detaille dyal plan 
+
         $plan = planing::findOrFail($planId);
         $this->sendAbonnementUpdatedEmail($user, $plan);
-    }
 
-    return redirect()->back()->with('success', 'Plan assigned to users successfully!');
+        $planDuration = $plan->duration_in_days;
+        $expirationDate = Carbon::parse($user->updated_at)->addDays($planDuration);
+
+        if (Carbon::now()->gt($expirationDate)) {
+            foreach ($users as $user) {
+                $user->Plan_id = $planId;
+                $user->save();
+                $this->sendAbonnementUpdatedEmail($user, $plan);
+            }
+            return redirect()->back()->with('error', 'Your plan has expired. Please choose a new plan.');
+        }
+        else {
+            foreach ($users as $user) {
+                $user->Plan_id = $planId;
+                $user->save();
+                $this->sendAbonnementUpdatedEmail($user, $plan);
+            }
+            return redirect()->back()->with('success', 'Plan assigned successfully!');
+        }
+    }
 }
+
+
+
 
 /**
  * Send email notification to user about abonnement update.
@@ -137,3 +154,57 @@ private function sendAbonnementUpdatedEmail($user, $plan)
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+// public function assignPlan(Request $request)
+// {
+//     $restoId = Auth::user()->resto_id;
+//     $planId = $request->Plan_id;
+
+//     $plan = planing::findOrFail($planId);
+
+
+//     $planDuration = $plan->duration_in_days;
+//     $expirationDate = Carbon::parse(Auth::user()->updated_at)->addDays($planDuration);
+
+//     if (Carbon::now()->lt($expirationDate)) {
+//         return redirect()->back()->with('info', 'Your plan is still active. If you want to change your plan, please contact support.');
+//     } if (Carbon::now()->gt($expirationDate)) {
+
+//         return redirect()->back()->with('error', 'Your plan has expired. Please choose a new plan.');
+//     } if (Auth::user()->Plan_id != $planId) {
+//         $users = User::where('resto_id', $restoId)->get();
+
+//         foreach ($users as $user) {
+//             $user->Plan_id = $planId;
+//             $user->save();
+//             $this->sendAbonnementUpdatedEmail($user, $plan);
+//         }
+//         return redirect()->back()->with('success', 'Plan assigned successfully!');
+//     }
+
+   
+// }
+// public function assignPlan(Request $request)
+// {
+    
+//     $restoId = Auth::user()->resto_id;
+//     // jebt biha ga3 khoutna li b7al khothom
+//     $users = User::where('resto_id', $restoId)->get();
+//     $planId = $request->Plan_id;
+//         foreach ($users as $user) {
+//         $user->Plan_id = $planId;
+//         $user->save();
+//     }
+
+//     return redirect()->back()->with('success', 'Plan assigned to users successfully!');
+// }

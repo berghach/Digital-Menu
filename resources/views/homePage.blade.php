@@ -35,7 +35,7 @@
             <div class="banner-left-w3">
                 <div class="container">
                     <div class="banner-info_agile_w3ls">
-                        <h5>Only Fresh Burgers</h5>
+                        <h5></h5>
                         <h3 class="text-da mb-4">Flame <span>Grilled Burger</span> </h3>
                         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
                             laudantium</p>
@@ -123,34 +123,37 @@
         <div class="row">
             <!-- blog grid -->
 <!-- blog grid -->
-<div class="row">
-    @foreach ($menus as $menu)
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-img-top">
-                <a href="#">
-                    @foreach ($menu->getMedia('images') as $image)
-                        <img class="card-img-top" src="{{ $image->getUrl() }}" alt="{{ $menu->name }} Image">
-                    @endforeach
-                    @foreach ($menu->getMedia('videos') as $video)
-                        <video class="card-img-top" controls>
-                            <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
-                            Your browser does not support the video tag.
-                        </video>
-                    @endforeach
-                </a>
-            </div>
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{ $menu->name }}</h5>
-                <p class="card-text flex-grow-1">{{ $menu->description }}</p>
-                <div class="mt-auto text-center">
-                    {{ QrCode::size(100)->SMS('http://localhost/allItems/' . $menu->id) }}
-                </div>
-            </div>
+<div class="card" style="width: 19rem;">
+    <div class="card-body">
+        @foreach ($menus as $menu)
+        @foreach ($menu->getMedia('images') as $image)
+        <img class="card-img-top" src="{{ $image->getUrl() }}" alt="{{ $menu->name }} Image">
+        @endforeach
+
+        <!-- Display videos -->
+        @foreach ($menu->getMedia('videos') as $video)
+        <video style="width: 100%; height: auto;" class="card-img-top" controls>
+            <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
+            Your browser does not support the video tag.
+        </video>
+        @endforeach
+
+        <h5 class="card-title">{{ $menu->name }}</h5>
+        <p class="card-text">{{ $menu->description }}</p>
+
+        <!-- QR Code -->
+        <div class="text-center mb-3">
+            <!-- Generate QR code using Laravel QRCode package -->
+            {{ QrCode::size(200)->generate('http://localhost/allItems/' . $menu->id) }}
         </div>
+
+        @endforeach
     </div>
-    @endforeach
 </div>
+
+
+
+
 
 
 <!-- //blog grid -->

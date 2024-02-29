@@ -11,6 +11,8 @@
                         <input type="text" class="form-control mt-3" name="name" value="{{ $plan->name }}">
                         <input type="number" class="form-control mt-3" name="price" value="{{ $plan->price }}">
                         <input type="number" class="form-control mt-3" name="duration_in_days" value="{{ $plan->duration_in_days }}">
+                        <input type="number" class="form-control mt-3" name="NumberOfmenus" value="{{ $plan->NumberOfmenus }}">
+                        <input type="number" class="form-control mt-3" name="NumberOfOperateurs" value="{{ $plan->NumberOfOperateurs }}">
                         <button class="btn btn-success submit mb-4" type="submit">
                             <img src="{{ asset('helps/images/sub.png') }}" style="width: 5%; display: inline-block; vertical-align: middle;" alt="">
                             <span style="display: inline-block; vertical-align: middle;">Update Plan</span>

@@ -1,10 +1,10 @@
 @include('base')
 <x-Admin-layout>
-    {{-- <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot> --}}
+    @if(session('success'))
+    <div class="alert alert-success" role="alert">
+    {{ session('success') }}
+    </div>
+    @endif
     
 
     <div class="py-12">
@@ -34,6 +34,14 @@
                         <div class="form-group">
                             <label class="mb-2">Days</label>
                             <input type="number" class="form-control" name="duration_in_days" id="password1" placeholder="" required="">
+                        </div>
+                        <div class="form-group">
+                            <label class="mb-2">Max Of Operatuers</label>
+                            <input type="number" class="form-control" name="NumberOfOperateurs" id="password1" placeholder="" required="">
+                        </div>
+                        <div class="form-group">
+                            <label class="mb-2">Max Of Menu</label>
+                            <input type="number" class="form-control" name="NumberOfmenus   " id="password1" placeholder="" required="">
                         </div>
                         <button type="submit" class="btn submit mb-4">ADD Plan</button>
                     </form>                    

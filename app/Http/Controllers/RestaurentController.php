@@ -36,15 +36,14 @@ class RestaurentController extends Controller
                 'address' => 'required|string',
                 'hours_of_operation' => 'required|string',
             ]);
-            
-            // Create a new instance of Restaurant
+
             $restaurant = new Restaurent();
             $restaurant->name = $request->name;
             $restaurant->address = $request->address;
             $restaurant->hours_of_operation = $request->hours_of_operation;
             $restaurant->save();
         
-            // Update the user's resto_id
+            //hadi ta katb9a null ta katcree dak loperaturs 3ad katkhdem
             $user = Auth::user();
             $user->resto_id = $restaurant->id; 
             $user->save();

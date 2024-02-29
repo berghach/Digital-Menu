@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('price');
             $table->integer('duration_in_days');
+            $table->integer('NumberOfmenus');
+            $table->integer('NumberOfOperateurs');
             $table->timestamps();
         });
         
