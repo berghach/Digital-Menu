@@ -1,14 +1,41 @@
 
 <!-- //navigation -->
 
-<!-- banner -->
+{{-- <!-- banner -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/qrious.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script> --}}
+<style>
+    .card {
+        border: 1px solid #8f8585;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: 200px; /* Set a fixed height for the image or video */
+        object-fit: cover; /* Ensure the image or video fills the container */
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-text {
+        flex-grow: 1; /* Allow the text to expand to fill remaining space */
+    }
+</style>
+
 <div class="baneer-w3ls">
     <div class="row no-gutters">
         <div class="col-xl-5 col-lg-6">
             <div class="banner-left-w3">
                 <div class="container">
                     <div class="banner-info_agile_w3ls">
-                        <h5>Only Fresh Burgers</h5>
+                        <h5></h5>
                         <h3 class="text-da mb-4">Flame <span>Grilled Burger</span> </h3>
                         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
                             laudantium</p>
@@ -91,26 +118,46 @@
     <div class="container pb-xl-5 pb-lg-3">
         <div class="title-section text-center mb-md-5 mb-4">
             <p class="w3ls-title-sub">Tasty</p>
-            <h3 class="w3ls-title">Our <span>Special</span></h3>
+            <h3 class="w3ls-title">Our <span>Menues</span></h3>
         </div>
         <div class="row">
             <!-- blog grid -->
-            <div class="col-lg-4 col-md-6">
-                <div class="card border-0 med-blog">
-                    <div class="card-header p-0">
-                        <a href="menu.html">
-                            <img class="card-img-bottom" src="{{ asset('helps/images/blog1.jpg') }}" alt="Card image cap">
-                        </a>
-                    </div>
-                    <div class="card-body border border-top-0">
-                        <h5 class="blog-title card-title m-0"><a href="menu.html">French Burger</a></h5>
-                        <p class="mt-3">Cras ultricies ligula sed magna dictum porta auris blandita.</p>
-                        <a href="menu.html" class="btn button-w3ls mt-4 mb-3">View More
-                            <span class="fa fa-caret-right ml-1" aria-hidden="true"></span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+<!-- blog grid -->
+<div class="card" style="width: 19rem;">
+    <div class="card-body">
+        @foreach ($menus as $menu)
+        @foreach ($menu->getMedia('images') as $image)
+        <img class="card-img-top" src="{{ $image->getUrl() }}" alt="{{ $menu->name }} Image">
+        @endforeach
+
+        <!-- Display videos -->
+        @foreach ($menu->getMedia('videos') as $video)
+        <video style="width: 100%; height: auto;" class="card-img-top" controls>
+            <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
+            Your browser does not support the video tag.
+        </video>
+        @endforeach
+
+        <h5 class="card-title">{{ $menu->name }}</h5>
+        <p class="card-text">{{ $menu->description }}</p>
+
+        <!-- QR Code -->
+        <div class="text-center mb-3">
+            <!-- Generate QR code using Laravel QRCode package -->
+            {{ QrCode::size(200)->generate('http://localhost/allItems/' . $menu->id) }}
+        </div>
+
+        @endforeach
+    </div>
+</div>
+
+
+
+
+
+
+<!-- //blog grid -->
+
             <!-- //blog grid -->
             <!-- blog grid -->
 
@@ -310,3 +357,8 @@
         </div>
     </div>
 </div>
+{{-- 
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/qrious.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script> --}}

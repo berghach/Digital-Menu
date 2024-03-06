@@ -25,23 +25,45 @@
                     @endrole
                     @role('Awner')
                     <x-nav-link :href="route('Awner')" :active="request()->routeIs('Awner')">
-                        {{ __('Awner') }}
+                        {{ __('Plans') }}
                     </x-nav-link>
                     <x-nav-link :href="route('yoAwner')" :active="request()->routeIs('yoAwner')">
                         {{ __('Create Resto') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('operatuerForm')" :active="request()->routeIs('operatuerForm')">
-                        {{ __('Add Operatuers') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('GestionOfOPerar')" :active="request()->routeIs('GestionOfOPerar')">
-                        {{ __('Gestion Operatuers') }}
+                        {{ __('Operatuers') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('menusform')" :active="request()->routeIs('menusform')">
+                        {{ __('Add Menu') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('assignPermissionsForm')" :active="request()->routeIs('assignPermissionsForm')">
+                        {{ __('gev permission') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('items.getAllItems')" :active="request()->routeIs('items.getAllItems')">
+                        {{ __('items') }}
                     </x-nav-link>
                     @endrole
                     @role('Operatuer')
                     <x-nav-link :href="route('Operatuer')" :active="request()->routeIs('Operatuer')">
                         {{ __('Operatuer') }}
                     </x-nav-link>
+                    @can('add menu')
+                    <x-nav-link :href="route('menusform')" :active="request()->routeIs('menusform')">
+                        {{ __('Add Menu') }}
+                    </x-nav-link>
+                    @endcan
+
                     @endrole
+                    {{-- @role('operator')
+                    
+                    <x-nav-link :href="route('menu.index')" :active="request()->routeIs('menu.index')">
+                        {{ ('Gestion menus') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('Article.index')" :active="request()->routeIs('Article.index')">
+                        {{ ('Gestion articles') }}
+                    </x-nav-link>
+
+                    @endrole --}}
                 </div>
             </div>
 

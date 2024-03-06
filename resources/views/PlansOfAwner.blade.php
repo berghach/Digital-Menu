@@ -3,6 +3,17 @@
 {{ session('success') }}
 </div>
 @endif
+@if(session('info'))
+    <div class="alert alert-warning">
+        {{ session('info') }}
+    </div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="container py-12">
     <div class="row">
     @foreach($plans as $plan)
@@ -15,18 +26,29 @@
                 </a>
             </div>
             @role('Admin')
-            <a class="btn btn-success mt-3" style="width: 100%" href="{{ route('plans.edit', $plan) }}">Edit</a>
+            <a class="btn btn-success mt-3" style="width: 100%" href="{{ route('plans.edit', $plan) }}">   
+                <img src="{{ asset('helps/images/sub.png') }}" style="width: 5%; display: inline-block; vertical-align: middle;" alt="">                 
+                <span style="display: inline-block; vertical-align: middle;">Edit</span>
+            </a>
             <form action="{{ route('plans.destroy', $plan) }}" method="post">
                 @csrf
                 @method('delete')
-                <button type="submit" class="btn submit mb-4">Delete</button>
+                <button type="submit" class="btn submit mb-4">
+                    <img src="{{ asset('helps/images/t2.png') }}" style="width: 6%; display: inline-block; vertical-align: middle;" alt="">
+                    <span style="display: inline-block; vertical-align: middle;">Delet</span>
+                </button>
             </form>
             @endrole
             @role('Awner')
             <form action="{{ route('operatorsPlan') }}" method="POST">
                 @csrf
                 <input type="hidden" name="Plan_id" value="{{ $plan->id }}">
-                <button class="btn btn-warning submit mb-4" type="submit">Assign Plan</button>
+                {{-- <input type="hidden" name="Plan_id" value="{{ $plan->duration_in_days }}"> --}}
+
+                <button class="btn btn-warning submit mb-4" type="submit">
+                    <img src="{{ asset('helps/images/t1.png') }}" style="width: 5%; display: inline-block; vertical-align: middle;" alt="">
+                    <span style="display: inline-block; vertical-align: middle;">Assign Plan</span>
+                </button>
             </form>
             
             @endrole
